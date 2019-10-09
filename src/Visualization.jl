@@ -13,6 +13,12 @@ import HTTP.Messages
 const LOCAL_EMBED_PORT = 8156
 const LOCAL_EMBED_FOLDER = joinpath(dirname(pathof(CurricularAnalytics)),"..","embed_client","dist")
 
+using WebIO, Mux
+function myapp(req) # an "App" takes a request, returns the output
+    #Node(:div, "Hello, World!")
+    Node(:div, s)
+end
+
 function get_embed_url()
         local_embed_url = string("http://localhost:", LOCAL_EMBED_PORT)
         try
@@ -207,15 +213,16 @@ function viz_helper(plan::DegreePlan; changed, notebook, edit, hide_header=false
         # scoped by WebIO
         s
     else
+        webio_serve(page("/", req -> myapp(req)))
         # Write window body
-		w=Window()
-        body!(
-            w,
+		#w=Window()
+        #body!(
+          #  w,
 
             # scoped by WebIO
-            s
-        )
-        return w
+         #   s
+        #)
+       # return w
     end
 end
 
